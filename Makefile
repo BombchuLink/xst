@@ -7,7 +7,7 @@ include config.mk
 SRC = st.c x.c boxdraw.c
 OBJ = $(SRC:.c=.o)
 
-all: options st
+all: options xst
 
 options:
 	@echo st build options:
@@ -27,11 +27,11 @@ boxdraw.o: config.h st.h boxdraw_data.h
 
 $(OBJ): config.h config.mk
 
-st: $(OBJ)
-	$(CC) -o xst $(OBJ) $(STLDFLAGS)
+xst: $(OBJ)
+	$(CC) -o $@ $(OBJ) $(STLDFLAGS)
 
 clean:
-	rm -f xst config.h $(OBJ) st-$(VERSION).tar.gz
+	rm -f xst $(OBJ) st-$(VERSION).tar.gz
 
 dist: clean
 	mkdir -p st-$(VERSION)
@@ -41,7 +41,7 @@ dist: clean
 	tar -cf - st-$(VERSION) | gzip > st-$(VERSION).tar.gz
 	rm -rf st-$(VERSION)
 
-install: st
+install: xst
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp -f xst $(DESTDIR)$(PREFIX)/bin
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/xst
